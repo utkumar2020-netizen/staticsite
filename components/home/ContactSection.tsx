@@ -53,7 +53,7 @@ export function ContactSection() {
                   <Mail className="w-6 h-6 text-primary-500 mt-0.5" />
                   <div>
                     <p className="font-semibold text-gray-900">Email</p>
-                    <p className="text-gray-600">contact@itservices.com</p>
+                    <p className="text-gray-600">utkumar2020@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4 p-4 rounded-xl bg-gray-50">
