@@ -23,24 +23,28 @@ const teamMembers = [
     role: 'UI/UX Developer',
     skills: ['React', 'Tailwind', 'Figma'],
     description: 'Creating pixel-perfect, accessible interfaces.',
+    image: '/member-2.jfif',
   },
   {
     name: 'Backend Engineer',
     role: 'API & Database Expert',
     skills: ['Node.js', 'PostgreSQL', 'AWS'],
     description: 'Building scalable and secure backend systems.',
+    image: '/member-3.jfif',
   },
   {
     name: 'Mobile Developer',
     role: 'React Native Specialist',
     skills: ['React Native', 'iOS', 'Android'],
     description: 'Delivering cross-platform mobile experiences.',
+    image: '/member-4.jfif',
   },
   {
     name: 'Project Manager',
     role: 'Agile Delivery Lead',
     skills: ['Agile', 'Scrum', 'JIRA'],
     description: 'Ensuring on-time, on-budget project delivery.',
+    image: '/member-5.jfif',
   },
 ];
 
@@ -101,7 +105,7 @@ export function AboutSection() {
                   <h3 className="font-semibold text-gray-900">{member.name}</h3>
                   <p className="text-sm text-primary-600">{member.role}</p>
                 </div>
-                <div><img src={member.image} alt="iuyiyi" width=/></div>
+                <div><img src={member.image} alt="iuyiyi" width={50} height={50} className="rounded-full object-cover border-4 border-primary-500" style={{ marginLeft: "20px" }}/></div>
               </div>
               <p className="text-sm text-gray-600 mb-3">{member.description}</p>
               <div className="flex flex-wrap gap-2">
