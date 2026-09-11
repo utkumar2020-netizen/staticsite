@@ -8,36 +8,36 @@ const services = [
     name: 'Website Development',
     price: '₹5,000',
     features: [
-      'Custom design & development',
+      'Predefined Template-based website',
       'Responsive & mobile-first',
       'Performance optimized',
       'SEO ready',
       'Security implementation',
-      '30-day support',
+      '10-day support',
     ],
   },
   {
     name: 'Web Applications',
-    price: '₹25,000',
+    price: '₹50,000',
     features: [
       'Full-stack development',
-      'Scalable architecture',
       'API integration',
       'Database design',
       'Authentication & security',
       'Testing & deployment',
+      '30-day support',
     ],
   },
   {
-    name: 'E-Commerce',
-    price: '₹70,000',
+    name: 'E-Commerce Online store',
+    price: '₹50,000',
     features: [
       'Online store development',
       'Payment gateway integration',
       'Inventory management',
       'User accounts & orders',
       'Admin dashboard',
-      'Performance optimization',
+      '30-day support',
     ],
   },
   {
@@ -48,7 +48,7 @@ const services = [
       'Native-like performance',
       'API integration',
       'Push notifications',
-      'App store deployment',
+      'Login/signup feature',
       '30-day support',
     ],
   },
@@ -61,7 +61,7 @@ const services = [
       'Integration with existing systems',
       'Data processing & analytics',
       'Scalable architecture',
-      'Training & documentation',
+      '30-day support',
     ],
   },
   {
@@ -135,7 +135,10 @@ export function PricingSection() {
             </motion.div>
           ))}
         </div>
-
+          <p className="text-gray-600">
+            *Note: Prices are starting estimates and may vary based on requirements and project complexity.{' '}
+              Domain, hosting, SSL, third-party services, and other external charges are not included above and are payable separately by the client           
+          </p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -143,6 +146,7 @@ export function PricingSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 text-center"
         >
+
           <p className="text-gray-600">
             Need a custom solution?{' '}
             <a href="#contact" className="text-primary-600 font-semibold hover:underline">
