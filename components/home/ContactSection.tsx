@@ -2,11 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Mail, Phone, MapPin, Send, 
-  MessageSquare, CheckCircle, Loader2 
-} from 'lucide-react';
-import { sendEmail } from '@/app/actions/sendEmail'; // adjust path if needed
+import { Mail, Phone, MapPin, Send, MessageSquare, CheckCircle, Loader2 } from 'lucide-react';
+import { sendEmail } from '@/app/actions/sendMail'; // adjust path if needed
 
 export function ContactSection() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
