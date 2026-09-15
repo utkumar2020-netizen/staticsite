@@ -4,18 +4,37 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Mail, Phone, MapPin, Send, 
-  MessageSquare, CheckCircle 
+  MessageSquare, CheckCircle, Loader2 
 } from 'lucide-react';
+import { sendEmail } from '@/app/actions/sendEmail'; // adjust path if needed
 
 export function ContactSection() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // For static demo, just show success message
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-  };
+    setStatus('sending');
+    setStatusMessage('');
+
+    const formData = new FormData(e.currentTarget);
+    const result = await sendEmail(formData);
+
+    if (result.success) {
+      setStatus('success');
+      setStatusMessage(result.message);
+      e.currentTarget.reset();
+      
+      // Reset success message after 4 seconds
+      setTimeout(() => {
+        setStatus('idle');
+        setStatusMessage('');
+      }, 4000);
+    } else {
+      setStatus('error');
+      setStatusMessage(result.message);
+    }
+  }
 
   return (
     <section id="contact" className="py-24 bg-white">
@@ -36,6 +55,7 @@ export function ContactSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          {/* Left side - Contact Info (unchanged) */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -78,16 +98,10 @@ export function ContactSection() {
                   </div>
                 </div>
               </div>
-
-              <div className="p-4 rounded-xl bg-gradient-to-r from-primary-50 to-indigo-50 border border-primary-100">
-                <p className="text-sm text-gray-700">
-                  <span className="font-semibold">Note:</span> This is a demo website showing our capabilities. 
-                  For real project discussions, please reach out through the channels above.
-                </p>
-              </div>
             </div>
           </motion.div>
 
+          {/* Right side - Form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -102,6 +116,7 @@ export function ContactSection() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors outline-none"
                   placeholder="John Doe"
@@ -115,6 +130,7 @@ export function ContactSection() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors outline-none"
                   placeholder="john@example.com"
@@ -127,16 +143,17 @@ export function ContactSection() {
                 </label>
                 <select
                   id="project"
+                  name="project"
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors outline-none"
                 >
-                  <option>Select a project type</option>
-                  <option>Website Development</option>
-                  <option>Web Application</option>
-                  <option>E-Commerce Platform</option>
-                  <option>Mobile Application</option>
-                  <option>Business Automation</option>
-                  <option>AI Integration</option>
-                  <option>Other</option>
+                  <option value="">Select a project type</option>
+                  <option value="Website Development">Website Development</option>
+                  <option value="Web Application">Web Application</option>
+                  <option value="E-Commerce Platform">E-Commerce Platform</option>
+                  <option value="Mobile Application">Mobile Application</option>
+                  <option value="Business Automation">Business Automation</option>
+                  <option value="AI Integration">AI Integration</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
 
@@ -146,6 +163,7 @@ export function ContactSection() {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   required
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors outline-none resize-none"
@@ -155,9 +173,15 @@ export function ContactSection() {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:-translate-y-1"
+                disabled={status === 'sending'}
+                className="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:-translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
-                {submitted ? (
+                {status === 'sending' ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : status === 'success' ? (
                   <>
                     <CheckCircle className="w-5 h-5" />
                     Message Sent!
@@ -170,9 +194,12 @@ export function ContactSection() {
                 )}
               </button>
 
-              <p className="text-xs text-gray-500 text-center">
-                This is a demo form. For real enquiries, please use the contact information above.
-              </p>
+              {status === 'error' && (
+                <p className="text-sm text-red-600 text-center">{statusMessage}</p>
+              )}
+              {status === 'success' && (
+                <p className="text-sm text-green-600 text-center">{statusMessage}</p>
+              )}
             </form>
           </motion.div>
         </div>
